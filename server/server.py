@@ -49,7 +49,7 @@ def handle_client(client, ):  # Takes client socket as argument.
                         while True: #loop for messages
                             msg = client.recv(BUFSIZ).decode("utf8") #receive message
                             if msg == "exit": #user send exit
-                                client.send(bytes("exit", "utf8"))
+                                #client.send(bytes("exit", "utf8"))
                                 client.close()
                                 print("%s:%s has disconnected." % addresses[client])
                                 del clients[client]
@@ -57,7 +57,7 @@ def handle_client(client, ):  # Takes client socket as argument.
                                 name = "exit"
                                 break
                             elif msg == "quit": #user send quit
-                                client.send(bytes("quit", "utf8"))
+                                #client.send(bytes("quit", "utf8"))
                                 client.close()
                                 print("%s:%s has disconnected." % addresses[client])
                                 del clients[client]
@@ -92,7 +92,7 @@ def handle_client(client, ):  # Takes client socket as argument.
                                     time.sleep(0.1)
                                     client.send(bytes(f"[{current_time}]     %process: file1-<YOUR_INPUT_FILE> file2-<YOUR_OUTPUT_FILE> ", "utf8"))
                                     time.sleep(0.1)
-                                    client.send(bytes(f"[{current_time}]                                                                      - sorting file with an array of numbers.", "utf8"))
+                                    client.send(bytes(f"[{current_time}]                - sorting file with an array of numbers.", "utf8"))
                                     time.sleep(0.1)
                                     client.send(bytes(f"[{current_time}]     exit - close program.", "utf8"))
                                 else:

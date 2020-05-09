@@ -5,6 +5,7 @@ import os
 import time
 import sys
 import random
+import platform
 
 
 def receive(my_msg, msg_list, top, ip_field, port_field, bottom_frame):
@@ -16,9 +17,9 @@ def receive(my_msg, msg_list, top, ip_field, port_field, bottom_frame):
                 disconnect(my_msg, msg_list, top, ip_field, port_field, bottom_frame) #disconnect user, hide message frame
                 msg_list.insert(tkinter.END, "The server has shutdown.") #display that server shuydown
                 msg_list.yview(tkinter.END) #move to the last message
-            elif msg == "exit": #server replied to exit
-                client_socket.close() #close connection
-                top.quit() #close tab
+            #elif msg == "exit": #server replied to exit
+               # client_socket.close() #close connection
+                #top.quit() #close tab
             elif msg.find("Sorted array: file2-") != -1: #server replied to process command
                 output_file = ""
                 _len = len(msg)
@@ -148,9 +149,12 @@ def main():
 
     scrollbar = tkinter.Scrollbar(top_frame, width=18) #vertical scrollbar
     scrollbar_hor = tkinter.Scrollbar(center_frame, width=18, orient='horizontal') #horizontal scrollbar
-
-    msg_list = tkinter.Listbox(top_frame, height=25, width=75, yscrollcommand=scrollbar.set, xscrollcommand=scrollbar_hor.set) #initialize list box for message
-    msg_list.config(bd=3, bg="#0e1621", selectbackground="#f5f5f5", fg="#f5f5f5", highlightcolor="#f5f5f5", highlightthickness=2, relief=tkinter.GROOVE, font=20, activestyle='none') #config list box
+    if platform.system() == "Windows":
+        msg_list = tkinter.Listbox(top_frame, height=18, width=70, yscrollcommand=scrollbar.set, xscrollcommand=scrollbar_hor.set) #initialize list box for message
+        msg_list.config(bd=3, bg="#0e1621", selectbackground="#f5f5f5", fg="#f5f5f5", highlightcolor="#f5f5f5", highlightthickness=2, relief=tkinter.GROOVE, font=12, activestyle='none') #config list box
+    else:
+        msg_list = tkinter.Listbox(top_frame, height=25, width=75, yscrollcommand=scrollbar.set, xscrollcommand=scrollbar_hor.set) #initialize list box for message
+        msg_list.config(bd=3, bg="#0e1621", selectbackground="#f5f5f5", fg="#f5f5f5", highlightcolor="#f5f5f5", highlightthickness=2, relief=tkinter.GROOVE, font=20, activestyle='none') #config list box
 
     scrollbar.config(command=msg_list.yview)  #vertical scrollbar config
     scrollbar_hor.config(command=msg_list.xview) #horizontal scrollbar config
@@ -158,7 +162,10 @@ def main():
     #show widgets on frame for displaying message
     msg_list.pack(side=tkinter.LEFT, fill=tkinter.BOTH)
     scrollbar.pack(side=tkinter.RIGHT, fill=tkinter.Y, pady=(0, 1))
-    scrollbar_hor.pack(side=tkinter.TOP, fill=tkinter.X, ipadx=357, padx=(0, 20), pady=(0, 15))
+    if platform.system() == "Windows":
+        scrollbar_hor.pack(side=tkinter.TOP, fill=tkinter.X, ipadx=310, padx=(0, 20), pady=(0, 15))
+    else:
+        scrollbar_hor.pack(side=tkinter.TOP, fill=tkinter.X, ipadx=357, padx=(0, 20), pady=(0, 15))
     top_frame.pack(side=tkinter.TOP)
 
     #initialize widget on frame for sending message
@@ -166,17 +173,21 @@ def main():
     text_ip = tkinter.Label(center_frame, width=3, height=1, text="IP:", font=25)
     text_port = tkinter.Label(center_frame, width=5, height=1, text="PORT:", font=25)
     my_msg = tkinter.StringVar()  # For the messages to be sent.
-    entry_field = tkinter.Entry(bottom_frame, textvariable=my_msg, width=35)
+    entry_field = tkinter.Entry(bottom_frame, textvariable=my_msg, width=55, font=22)
     entry_field.bind("<Return>", lambda x: send(my_msg, top, msg_list))
     send_button = tkinter.Button(bottom_frame, text="Send", command= lambda: send(my_msg, top, msg_list), width=10, font=20)
 
     #initialize widget on frame for connecting
     ip_field = tkinter.StringVar()
     ip_field.set("127.0.0.1")
-    ip_field_value = tkinter.Entry(center_frame, textvariable=ip_field, width=20)
     port_field = tkinter.StringVar()
     port_field.set("33000")
-    port_field_value = tkinter.Entry(center_frame, textvariable=port_field, width=20)
+    if platform.system() == "Windows":
+        ip_field_value = tkinter.Entry(center_frame, textvariable=ip_field, width=15, font=16)
+        port_field_value = tkinter.Entry(center_frame, textvariable=port_field, width=15, font=16)
+    else:
+        ip_field_value = tkinter.Entry(center_frame, textvariable=ip_field, width=20, font=16)
+        port_field_value = tkinter.Entry(center_frame, textvariable=port_field, width=20, font=16)
     connect_button = tkinter.Button(center_frame, text="Connect", command= lambda: connect(ip_field_value, port_field_value, msg_list, ip_field, port_field, text_below_message, entry_field, send_button, bottom_frame, my_msg, top), width=10, font=20)
     disconnect_button = tkinter.Button(center_frame, text="Disconnect", command= lambda: disconnect(my_msg, msg_list, top, ip_field, port_field, bottom_frame), width=10, font=20)
 
