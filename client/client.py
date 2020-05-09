@@ -165,7 +165,7 @@ def main():
     if platform.system() == "Windows":
         scrollbar_hor.pack(side=tkinter.TOP, fill=tkinter.X, ipadx=310, padx=(0, 20), pady=(0, 15))
     else:
-        scrollbar_hor.pack(side=tkinter.TOP, fill=tkinter.X, ipadx=357, padx=(0, 20), pady=(0, 15))
+        scrollbar_hor.pack(side=tkinter.TOP, fill=tkinter.X, ipadx=355, padx=(0, 20), pady=(0, 15))
     top_frame.pack(side=tkinter.TOP)
 
     #initialize widget on frame for sending message
@@ -186,8 +186,8 @@ def main():
         ip_field_value = tkinter.Entry(center_frame, textvariable=ip_field, width=15, font=16)
         port_field_value = tkinter.Entry(center_frame, textvariable=port_field, width=15, font=16)
     else:
-        ip_field_value = tkinter.Entry(center_frame, textvariable=ip_field, width=20, font=16)
-        port_field_value = tkinter.Entry(center_frame, textvariable=port_field, width=20, font=16)
+        ip_field_value = tkinter.Entry(center_frame, textvariable=ip_field, width=18, font=16)
+        port_field_value = tkinter.Entry(center_frame, textvariable=port_field, width=18, font=16)
     connect_button = tkinter.Button(center_frame, text="Connect", command= lambda: connect(ip_field_value, port_field_value, msg_list, ip_field, port_field, text_below_message, entry_field, send_button, bottom_frame, my_msg, top), width=10, font=20)
     disconnect_button = tkinter.Button(center_frame, text="Disconnect", command= lambda: disconnect(my_msg, msg_list, top, ip_field, port_field, bottom_frame), width=10, font=20)
 
